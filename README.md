@@ -1,4 +1,5 @@
-
+### COWS API
+A simple GO API to support the cow-names React UI
 ```
 # runs tidy, format, lint, test
 make check
