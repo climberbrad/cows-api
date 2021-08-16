@@ -8,10 +8,6 @@ import (
 	"sync"
 )
 
-// (GET) localhost:8080/v0/cows
-// (POST) localhost:8080/v0/cows/id
-// (PUT) localhost:8080/v0/cows -d {}
-
 type Cow struct {
 	Name   string `json:"name"`
 	ID     string `json:"id"`
@@ -26,6 +22,9 @@ type cowHandlers struct {
 }
 
 func (h *cowHandlers) cows(w http.ResponseWriter, r *http.Request) {
+	//Allow CORS here By * or specific origin
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	switch r.Method {
 	case "GET":
 		h.get(w, r)
