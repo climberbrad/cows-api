@@ -5,7 +5,7 @@ A simple CRUD API to support the cow-names React UI. Allows for basic operations
 
 ## API
 
--------
+
 ### GET
 
 **URL** : `/v0/cows/`
