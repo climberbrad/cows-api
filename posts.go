@@ -48,6 +48,9 @@ func (rs postsResource) Routes() chi.Router {
 
 // Request Handler - GET /posts - Read a list of posts.
 func (rs postsResource) List(w http.ResponseWriter, r *http.Request) {
+	//Allow CORS here By * or specific origin
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	cows := make([]Cow, len(rs.store))
 
 	rs.Lock()
@@ -72,6 +75,9 @@ func (rs postsResource) List(w http.ResponseWriter, r *http.Request) {
 
 // Request Handler - POST /posts - Create a new post.
 func (rs postsResource) Create(w http.ResponseWriter, r *http.Request) {
+	//Allow CORS here By * or specific origin
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	
 	bodyBytes, err := ioutil.ReadAll(r.Body)
 	defer r.Body.Close()
 	if err != nil {
@@ -107,6 +113,9 @@ func PostCtx(next http.Handler) http.Handler {
 
 // Request Handler - GET /posts/{id} - Read a single post by :id.
 func (rs postsResource) Get(w http.ResponseWriter, r *http.Request) {
+	//Allow CORS here By * or specific origin
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	id := r.Context().Value("id").(string)
 	found := rs.store[id]
 
@@ -124,6 +133,9 @@ func (rs postsResource) Get(w http.ResponseWriter, r *http.Request) {
 
 // Request Handler - PUT /posts/{id} - Update a single post by :id.
 func (rs postsResource) Update(w http.ResponseWriter, r *http.Request) {
+	//Allow CORS here By * or specific origin
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	id := r.Context().Value("id").(string)
 	bodyBytes, err := ioutil.ReadAll(r.Body)
 
@@ -140,6 +152,9 @@ func (rs postsResource) Update(w http.ResponseWriter, r *http.Request) {
 
 // Request Handler - DELETE /posts/{id} - Delete a single post by :id.
 func (rs postsResource) Delete(w http.ResponseWriter, r *http.Request) {
+	//Allow CORS here By * or specific origin
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	id := r.Context().Value("id").(string)
 	delete(rs.store, id)
 }
