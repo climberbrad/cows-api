@@ -1,7 +1,7 @@
 package main
 
 import (
-"context"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -13,14 +13,15 @@ import (
 )
 
 type Cow struct {
-	Name   string `json:"name"`
-	ID     string `json:"id"`
-	Date   string `json:"date"`
-	Image  string `json:"image"`
-	Finder string `json:"finder"`
+	Name        string `json:"name"`
+	ID          string `json:"id"`
+	Date        string `json:"date"`
+	Image       string `json:"image"`
+	Finder      string `json:"finder"`
+	Description string `json:"description"`
 }
 
-type postsResource struct{
+type postsResource struct {
 	sync.Mutex
 	store map[string]Cow
 }
@@ -68,8 +69,6 @@ func (rs postsResource) List(w http.ResponseWriter, r *http.Request) {
 		i++
 	}
 	rs.Unlock()
-
-	w.Header().Set("Content-Type", "application/json")
 
 	jsonBytes, err := json.Marshal(cows)
 	if err != nil {
