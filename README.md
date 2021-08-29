@@ -14,5 +14,5 @@ go build
 # Run
 Once built, the binaries will be under `target/`.
 ```shell
-go run server.go
+go run .
 ```
