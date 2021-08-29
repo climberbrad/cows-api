@@ -171,20 +171,13 @@ Date: Sun, 29 Aug 2021 15:22:02 GMT
 Content-Length: 0
 ```
 
-
-
-```
-# runs tidy, format, lint, test
-make check
-```
-
-# Build
+### Build
 From the root of this repository, run:
 ```shell
 go build
 ```
 
-# Run
+### Run
 Once built, the binaries will be under `target/`.
 ```shell
 go run .
