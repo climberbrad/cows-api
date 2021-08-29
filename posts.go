@@ -21,18 +21,18 @@ type Cow struct {
 	Description string `json:"description"`
 }
 
-type postsResource struct {
+type cowsResource struct {
 	sync.Mutex
 	store map[string]Cow
 }
 
-func newHandler() *postsResource {
-	return &postsResource{
+func newHandler() *cowsResource {
+	return &cowsResource{
 		store: map[string]Cow{},
 	}
 }
 
-func (rs postsResource) Routes() chi.Router {
+func (rs cowsResource) Routes() chi.Router {
 	r := chi.NewRouter()
 
 	r.Use(cors.Handler(cors.Options{
@@ -58,7 +58,7 @@ func (rs postsResource) Routes() chi.Router {
 }
 
 // Request Handler - GET /posts - Read a list of posts.
-func (rs postsResource) List(w http.ResponseWriter, r *http.Request) {
+func (rs cowsResource) List(w http.ResponseWriter, r *http.Request) {
 
 	cows := make([]Cow, len(rs.store))
 
@@ -81,7 +81,7 @@ func (rs postsResource) List(w http.ResponseWriter, r *http.Request) {
 }
 
 // Request Handler - POST /posts - Create a new post.
-func (rs postsResource) Create(w http.ResponseWriter, r *http.Request) {
+func (rs cowsResource) Create(w http.ResponseWriter, r *http.Request) {
 
 	bodyBytes, err := ioutil.ReadAll(r.Body)
 	defer r.Body.Close()
@@ -117,7 +117,7 @@ func PostCtx(next http.Handler) http.Handler {
 }
 
 // Request Handler - GET /posts/{id} - Read a single post by :id.
-func (rs postsResource) Get(w http.ResponseWriter, r *http.Request) {
+func (rs cowsResource) Get(w http.ResponseWriter, r *http.Request) {
 
 	id := r.Context().Value("id").(string)
 	found := rs.store[id]
@@ -135,7 +135,7 @@ func (rs postsResource) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 // Request Handler - PUT /posts/{id} - Update a single post by :id.
-func (rs postsResource) Update(w http.ResponseWriter, r *http.Request) {
+func (rs cowsResource) Update(w http.ResponseWriter, r *http.Request) {
 
 	id := r.Context().Value("id").(string)
 	bodyBytes, err := ioutil.ReadAll(r.Body)
@@ -152,7 +152,7 @@ func (rs postsResource) Update(w http.ResponseWriter, r *http.Request) {
 }
 
 // Request Handler - DELETE /posts/{id} - Delete a single post by :id.
-func (rs postsResource) Delete(w http.ResponseWriter, r *http.Request) {
+func (rs cowsResource) Delete(w http.ResponseWriter, r *http.Request) {
 
 	id := r.Context().Value("id").(string)
 	delete(rs.store, id)

@@ -21,7 +21,7 @@ func main() {
 
 
 	h := newHandler()
-	r.Mount("/posts", h.Routes())
+	r.Mount("/cows", h.Routes())
 
 	log.Fatal(http.ListenAndServe(":" + port, r))
 }
