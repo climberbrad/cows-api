@@ -13,12 +13,12 @@ import (
 )
 
 type Cow struct {
-	Name        string `json:"name"`
-	ID          string `json:"id"`
-	Date        string `json:"date"`
-	Image       string `json:"image"`
-	Finder      string `json:"finder"`
-	Description string `json:"description"`
+	Name        string `json:"name,omitempty"`
+	ID          string `json:"id,omitempty"`
+	Date        string `json:"date,omitempty"`
+	Image       string `json:"image,omitempty"`
+	Finder      string `json:"finder,omitempty"`
+	Description string `json:"description,omitempty"`
 }
 
 type cowsResource struct {
@@ -59,7 +59,6 @@ func (rs cowsResource) Routes() chi.Router {
 
 // Request Handler - GET /posts - Read a list of posts.
 func (rs cowsResource) List(w http.ResponseWriter, r *http.Request) {
-
 	cows := make([]Cow, len(rs.store))
 
 	rs.Lock()
@@ -120,7 +119,11 @@ func PostCtx(next http.Handler) http.Handler {
 func (rs cowsResource) Get(w http.ResponseWriter, r *http.Request) {
 
 	id := r.Context().Value("id").(string)
-	found := rs.store[id]
+	found, ok := rs.store[id]
+
+	if !ok {
+		fmt.Sprintf("Unknown cow ID: " + id)
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 
@@ -140,14 +143,14 @@ func (rs cowsResource) Update(w http.ResponseWriter, r *http.Request) {
 	id := r.Context().Value("id").(string)
 	bodyBytes, err := ioutil.ReadAll(r.Body)
 
-	fmt.Println("ID %s", id)
-
 	var cow Cow
 	err = json.Unmarshal(bodyBytes, &cow)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte(err.Error()))
 	}
+
+	// TODO: check to see if it exists first
 	rs.store[id] = cow
 }
 
@@ -155,5 +158,7 @@ func (rs cowsResource) Update(w http.ResponseWriter, r *http.Request) {
 func (rs cowsResource) Delete(w http.ResponseWriter, r *http.Request) {
 
 	id := r.Context().Value("id").(string)
+
+	// TODO: check to see if it exists first
 	delete(rs.store, id)
 }
