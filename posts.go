@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"sort"
+	"strings"
 	"sync"
 
 	"github.com/go-chi/chi/v5"
@@ -67,6 +69,9 @@ func (rs cowsResource) List(w http.ResponseWriter, r *http.Request) {
 		cows[i] = cow
 		i++
 	}
+	sort.Slice(cows, func(i, j int) bool {
+		return strings.ToLower(cows[i].Name) < strings.ToLower(cows[j].Name)
+	})
 	rs.Unlock()
 
 	jsonBytes, err := json.Marshal(cows)
